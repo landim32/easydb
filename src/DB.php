@@ -46,6 +46,7 @@ class DB {
      */
     public static function getList($db, $fieldName) {
         $retorno = array();
+        $db->execute();
         while ($row = $db->fetch(PDO::FETCH_ASSOC)) {
             $retorno[] = $row[$fieldName];
         }
@@ -61,6 +62,7 @@ class DB {
      */
     public static function getDictionary($db, $key, $fieldName) {
         $retorno = array();
+        $db->execute();
         while ($row = $db->fetch(PDO::FETCH_ASSOC)) {
             $retorno[$row[$key]] = $row[$fieldName];
         }
@@ -75,6 +77,7 @@ class DB {
      */
     public static function getValue($db, $fieldName) {
         $retorno = null;
+        $db->execute();
         if ($row = $db->fetch(PDO::FETCH_ASSOC)) {
             $retorno = $row[$fieldName];
         }
@@ -91,6 +94,20 @@ class DB {
         $retorno = array();
         $db->execute();
         while ($row = $db->fetchObject($className)) {
+            $retorno[] = $row;
+        }
+        $db->closeCursor();
+        return $retorno;
+    }
+
+    /**
+     * @param PDOStatement $db
+     * @return array
+     */
+    public static function getArray($db) {
+        $retorno = array();
+        $db->execute();
+        while ($row = $db->fetch(PDO::FETCH_ASSOC)) {
             $retorno[] = $row;
         }
         $db->closeCursor();
